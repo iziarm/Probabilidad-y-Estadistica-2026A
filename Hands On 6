@@ -1,0 +1,59 @@
+#include <iostream>
+#include <iomanip> 
+
+int main() {
+    std::cout << std::fixed << std::setprecision(4);
+
+    // 1. Matriz del Dataset (2x2)
+    // Fila 0: Llueve (B)       -> [Nublado, No Nublado]
+    // Fila 1: No Llueve (B')   -> [Nublado, No Nublado]
+    double dataset[2][2] = {
+        {7.0, 3.0}, // Llueve (B)
+        {2.0, 6.0}  // No llueve (B')
+    };
+
+    // 2. Cálculos de los Totales (Márgenes)
+    double total_B = dataset[0][0] + dataset[0][1];       // Fila 0 (Total Llueve = 10)
+    double total_B_prime = dataset[1][0] + dataset[1][1]; // Fila 1 (Total No llueve = 8)
+    
+    double total_A = dataset[0][0] + dataset[1][0];       // Columna 0 (Total Nublado = 9)
+    double total_A_prime = dataset[0][1] + dataset[1][1]; // Columna 1 (Total No Nublado = 9)
+    
+    double gran_total = total_A + total_A_prime;           // Gran Total (18)
+
+    std::cout << "=============================================\n";
+    std::cout << "        RESULTADOS PROBABILIDADES            \n";
+    std::cout << "=============================================\n\n";
+
+    // -----------------------------------------------------------------
+    // 1. PROBABILIDADES MARGINALES
+    // -----------------------------------------------------------------
+    std::cout << "--- 1. Probabilidades Marginales ---\n";
+    std::cout << "P(A)  [Nublado]    : " << (total_A / gran_total) << " (" << (total_A / gran_total) * 100 << "%)\n";
+    std::cout << "P(A') [No nublado] : " << (total_A_prime / gran_total) << " (" << (total_A_prime / gran_total) * 100 << "%)\n";
+    std::cout << "P(B)  [Llueve]     : " << (total_B / gran_total) << " (" << (total_B / gran_total) * 100 << "%)\n";
+    std::cout << "P(B') [No llueve]  : " << (total_B_prime / gran_total) << " (" << (total_B_prime / gran_total) * 100 << "%)\n\n";
+
+    // -----------------------------------------------------------------
+    // 2. PROBABILIDADES CONJUNTAS
+    // -----------------------------------------------------------------
+    std::cout << "--- 2. Probabilidades Conjuntas ---\n";
+    std::cout << "P(A y B)   [Nublado y Llueve]    : " << (dataset[0][0] / gran_total) << "\n";
+    std::cout << "P(A' y B)  [No nublado y Llueve] : " << (dataset[0][1] / gran_total) << "\n";
+    std::cout << "P(A y B')  [Nublado y No llueve] : " << (dataset[1][0] / gran_total) << "\n";
+    std::cout << "P(A' y B') [No nublado y No llue]: " << (dataset[1][1] / gran_total) << "\n\n";
+
+    // -----------------------------------------------------------------
+    // 3. PROBABILIDADES CONDICIONALES
+    // -----------------------------------------------------------------
+    std::cout << "--- 3. Probabilidades Condicionales ---\n";
+    // P(B|A) = P(A y B) / P(A) -> O lo que es igual: celda / total_columna
+    std::cout << "P(B|A)   [Llueve dado que esta Nublado]    : " << (dataset[0][0] / total_A) << "\n";
+    std::cout << "P(B|A')  [Llueve dado que NO esta Nublado] : " << (dataset[0][1] / total_A_prime) << "\n";
+    std::cout << "P(A|B)   [Nublado dado que esta Lloviendo] : " << (dataset[0][0] / total_B) << "\n";
+    std::cout << "P(A'|B') [No nublado dado que NO llueve]   : " << (dataset[1][1] / total_B_prime) << "\n";
+    
+    std::cout << "=============================================\n";
+
+    return 0;
+}
